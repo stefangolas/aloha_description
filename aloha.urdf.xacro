@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<xacro:robot xmlns:xacro="http://ros.org/wiki/xacro" name="aloha">
+
+  <!-- Properties -->
+  <xacro:property name="mesh_scale" value="0.001 0.001 0.001"/>
+  <xacro:property name="material_black" value="0.15 0.15 0.15 1"/>
+
+  <!-- Macros -->
+  <xacro:macro name="vx_link" params="name mesh mass ixx iyy izz">
+    <link name="${name}">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia ixx="${ixx}" iyy="${iyy}" izz="${izz}" ixy="0.0" ixz="0.0" iyz="0.0"/>
+      </inertial>
+      <visual>
+        <geometry>
+          <mesh filename="meshes/${mesh}" scale="${mesh_scale}"/>
+        </geometry>
+        <material name="black">
+          <color rgba="${material_black}"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="meshes/${mesh}" scale="${mesh_scale}"/>
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <xacro:macro name="vx_joint" params="name parent child type xyz lower upper effort velocity damping">
+    <joint name="${name}" type="${type}">
+      <origin xyz="${xyz}" rpy="0 0 0"/>
+      <parent link="${parent}"/>
+      <child link="${child}"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="${lower}" upper="${upper}" effort="${effort}" velocity="${velocity}"/>
+      <dynamics damping="${damping}"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- Left Arm Example -->
+  <xacro:vx_link name="left/base_link" mesh="vx300s_1_base.stl" mass="0.969034" ixx="0.0071633" iyy="0.00602451" izz="0.00169819"/>
+  <xacro:vx_link name="left/shoulder_link" mesh="vx300s_2_shoulder.stl" mass="0.798614" ixx="0.00120156" iyy="0.00113744" izz="0.0009388"/>
+
+  <xacro:vx_joint 
+    name="left/waist" 
+    parent="left/base_link" 
+    child="left/shoulder_link" 
+    type="revolute" 
+    xyz="0 0 0.079" 
+    lower="-3.14158" upper="3.14158" 
+    effort="35" velocity="1.0" damping="5.76"/>
+
+  <!-- Right Arm Example -->
+  <xacro:vx_link name="right/base_link" mesh="vx300s_1_base.stl" mass="0.969034" ixx="0.0071633" iyy="0.00602451" izz="0.00169819"/>
+  <xacro:vx_link name="right/shoulder_link" mesh="vx300s_2_shoulder.stl" mass="0.798614" ixx="0.00120156" iyy="0.00113744" izz="0.0009388"/>
+
+  <xacro:vx_joint 
+    name="right/waist" 
+    parent="right/base_link" 
+    child="right/shoulder_link" 
+    type="revolute" 
+    xyz="0 0 0.079" 
+    lower="-3.14158" upper="3.14158" 
+    effort="35" velocity="1.0" damping="5.76"/>
+
+  <!-- Finger Coupling -->
+  <joint name="left/finger_coupling" type="fixed">
+    <parent link="left/left_finger_link"/>
+    <child link="left/right_finger_link"/>
+  </joint>
+
+  <joint name="right/finger_coupling" type="fixed">
+    <parent link="right/left_finger_link"/>
+    <child link="right/right_finger_link"/>
+  </joint>
+
+</xacro:robot>
+
