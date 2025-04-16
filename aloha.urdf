@@ -4,7 +4,7 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <xacro:robot name="aloha">
-  <link name="left/base_link">
+  <link name="left_base_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <mass value="0.969034"/>
@@ -24,7 +24,7 @@
       </geometry>
     </collision>
   </link>
-  <link name="left/shoulder_link">
+  <link name="left_shoulder_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <mass value="0.798614"/>
@@ -44,15 +44,15 @@
       </geometry>
     </collision>
   </link>
-  <joint name="left/waist" type="revolute">
+  <joint name="left_waist" type="revolute">
     <origin rpy="0 0 0" xyz="0 0 0.079"/>
-    <parent link="left/base_link"/>
-    <child link="left/shoulder_link"/>
+    <parent link="left_base_link"/>
+    <child link="left_shoulder_link"/>
     <axis xyz="0 0 1"/>
     <limit effort="35" lower="-3.14158" upper="3.14158" velocity="1.0"/>
     <dynamics damping="5.76"/>
   </joint>
-  <link name="right/base_link">
+  <link name="right_base_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <mass value="0.969034"/>
@@ -72,7 +72,7 @@
       </geometry>
     </collision>
   </link>
-  <link name="right/shoulder_link">
+  <link name="right_shoulder_link">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <mass value="0.798614"/>
@@ -92,21 +92,21 @@
       </geometry>
     </collision>
   </link>
-  <joint name="right/waist" type="revolute">
+  <joint name="right_waist" type="revolute">
     <origin rpy="0 0 0" xyz="0 0 0.079"/>
-    <parent link="right/base_link"/>
-    <child link="right/shoulder_link"/>
+    <parent link="right_base_link"/>
+    <child link="right_shoulder_link"/>
     <axis xyz="0 0 1"/>
     <limit effort="35" lower="-3.14158" upper="3.14158" velocity="1.0"/>
     <dynamics damping="5.76"/>
   </joint>
   <!-- Finger Coupling -->
-  <joint name="left/finger_coupling" type="fixed">
-    <parent link="left/left_finger_link"/>
-    <child link="left/right_finger_link"/>
+  <joint name="left_finger_coupling" type="fixed">
+    <parent link="left_left_finger_link"/>
+    <child link="left_right_finger_link"/>
   </joint>
-  <joint name="right/finger_coupling" type="fixed">
-    <parent link="right/left_finger_link"/>
-    <child link="right/right_finger_link"/>
+  <joint name="right_finger_coupling" type="fixed">
+    <parent link="right_left_finger_link"/>
+    <child link="right_right_finger_link"/>
   </joint>
 </xacro:robot>
